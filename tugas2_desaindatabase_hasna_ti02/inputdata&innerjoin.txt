@@ -1,0 +1,374 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Host: 127.0.0.1
+-- Waktu pembuatan: 02 Jun 2023 pada 22.36
+-- Versi server: 10.4.28-MariaDB
+-- Versi PHP: 8.2.4
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `dbjadwal`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `kategori`
+--
+
+CREATE TABLE `kategori` (
+  `id` int(11) NOT NULL,
+  `nama` varchar(45) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data untuk tabel `kategori`
+--
+
+INSERT INTO `kategori` (`id`, `nama`) VALUES
+(1, 'PROGRAMMING'),
+(2, 'DATABASE');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `materi`
+--
+
+CREATE TABLE `materi` (
+  `id` int(11) NOT NULL,
+  `kode` char(11) NOT NULL,
+  `nama` varchar(45) NOT NULL,
+  `deskripsi` varchar(45) NOT NULL,
+  `durasi` varchar(45) NOT NULL,
+  `biaya` varchar(45) NOT NULL,
+  `kategori_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data untuk tabel `materi`
+--
+
+INSERT INTO `materi` (`id`, `kode`, `nama`, `deskripsi`, `durasi`, `biaya`, `kategori_id`) VALUES
+(1, 'PFE', 'Front End Web Developer', '(HTML, CSS, JS)', '2,5 jam', '150 ribu', 1),
+(2, 'PBE', 'Back End  Web Developer', '(JS, Pengelolaan API, Apache, dll)', '3 jam', '200ribu', 1),
+(3, 'PFS', 'Fullstack Web Developer', 'Belajar gabungan antara frontend dan backend ', '3 jam', '200ribu', 1),
+(4, 'DBMS', 'MySQL', 'Relational Database (untuk berbagai tujuan se', '3 jam', '200ribu', 2),
+(5, 'DBPS', 'PostgreSQL', 'Relational Database (aplikasi sistem manajeme', '3 Jam', '200ribu', 2),
+(6, 'DBMA', 'MariaDB', 'Relational Database (Sebut saja seperti port ', '3 jam', '200ribu', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `pengajar`
+--
+
+CREATE TABLE `pengajar` (
+  `id` int(11) NOT NULL,
+  `nip` varchar(45) NOT NULL,
+  `nama` varchar(45) NOT NULL,
+  `gender` enum('L','P') NOT NULL,
+  `hp` int(20) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `alamat` text NOT NULL,
+  `foto` varchar(45) NOT NULL,
+  `materi_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data untuk tabel `pengajar`
+--
+
+INSERT INTO `pengajar` (`id`, `nip`, `nama`, `gender`, `hp`, `email`, `alamat`, `foto`, `materi_id`) VALUES
+(1, '0220345676', 'Arka', 'L', 891152161, 'arka@gmail.com', 'Bogor', '', 1),
+(2, '02209879061', 'Bramantyo (Pengajar Cadangan)', 'L', 876524312, 'bram2@gmail.com', 'Jakarta', '', 1),
+(3, '02201721760', 'Fajrin', 'L', 892765151, 'f4jrin@gmail.com', 'Bekasi', '', 2),
+(4, '02209879061', 'Farzan (Pengajar Cadangan)', 'L', 851867312, 'farzan@gmail.com', 'Jakarta', '', 2),
+(5, '02201486251', 'Giandra', 'L', 831782673, 'giandra@gmail.com', 'Bekasi', '', 3),
+(6, '02209879061', 'Ijad (Pengajar Cadangan)', 'L', 851867312, 'ijad@gmail.com', 'Jakarta', '', 3),
+(7, '02203243526', 'Hara', 'L', 836526531, 'hara@gmail.com', 'Depok', '', 4),
+(8, '02207672738', 'Kafin (Pengajar Cadangan)', 'L', 85673545, 'kafin@gmail.com', 'Tanggerang', '', 4),
+(9, '02205253542', 'Ganendra', 'L', 831782673, 'giandra@gmail.com', 'Bekasi', '', 5),
+(10, '02204525367', 'Haikal (Pengajar Cadangan)', 'L', 851678273, 'ikal@gmail.com', 'Jakarta', '', 5),
+(11, '02206712617', 'Faisal ', 'L', 831102384, 'aisal@gmail.com', 'Depok', '', 6),
+(12, '02200908638', 'Fauzan (Pengajar Cadangan)', 'L', 851901287, 'uzan@gmail.com', 'Depok', '', 6),
+(13, '02206372478', 'Adit (Pengajar Cadangan)', 'L', 831891098, 'adit@gmail.com', 'Bogor', '', 1),
+(14, '02207921184', 'Iful (Pengajar Cadangan)', 'L', 811127665, 'ipul@gmail.com', 'Bogor', '', 2),
+(15, '02206372121', 'Maul (Pengajar Cadangan)', 'L', 831127671, 'maoel@gmail.com', 'Bogor', '', 3),
+(16, '02203435545', 'Faqih (Pengajar Cadangan)', 'L', 811128156, 'faqih@gmail.com', 'Jakarta', '', 4),
+(17, '02207689896', 'Rido (Pengajar Cadangan)', 'L', 851873248, 'ido@gmail.com', 'Depok', '', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `penjadwalan_kelas`
+--
+
+CREATE TABLE `penjadwalan_kelas` (
+  `id` int(11) NOT NULL,
+  `kode_kelas` char(11) NOT NULL,
+  `kelas` varchar(45) NOT NULL,
+  `hari` varchar(45) NOT NULL,
+  `tgl_mulai` date NOT NULL,
+  `tgl_akhir` date NOT NULL,
+  `jam_mulai` time NOT NULL,
+  `jam_akhir` time NOT NULL,
+  `materi_id` int(11) NOT NULL,
+  `peserta_id` int(11) NOT NULL,
+  `pengajar_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data untuk tabel `penjadwalan_kelas`
+--
+
+INSERT INTO `penjadwalan_kelas` (`id`, `kode_kelas`, `kelas`, `hari`, `tgl_mulai`, `tgl_akhir`, `jam_mulai`, `jam_akhir`, `materi_id`, `peserta_id`, `pengajar_id`) VALUES
+(1, 'JFE', 'FE', 'Senin dan Selasa', '2023-06-01', '2023-06-30', '08:00:00', '10:30:00', 1, 1, 1),
+(2, 'JBE', 'BE', 'Senin dan Kamis', '2023-06-01', '2023-07-15', '08:00:00', '11:00:00', 2, 8, 3),
+(3, 'JFS', 'FS', 'Senin dan Rabu', '2023-06-01', '2023-07-30', '13:00:00', '16:00:00', 3, 3, 5),
+(4, 'JDMS', 'DMS', 'Kamis dan Jumat', '2023-06-01', '2023-07-30', '08:00:00', '11:00:00', 4, 4, 7),
+(5, 'JDPS', 'DPS', 'Rabu dan Kamis', '2023-06-01', '2023-07-30', '13:00:00', '16:00:00', 5, 5, 9),
+(6, 'JDMA', 'DMA', 'Selasa dan Jumat', '2023-06-01', '2023-07-30', '08:00:00', '11:00:00', 6, 6, 11),
+(7, 'JFS', 'FS', 'Senin dan Rabu', '2023-06-01', '2023-07-30', '13:00:00', '16:00:00', 3, 9, 5),
+(8, 'JFS', 'FS', 'Senin dan Rabu', '2023-06-01', '2023-07-30', '13:00:00', '16:00:00', 3, 15, 5),
+(9, 'JFE', 'FE', 'Senin dan Selasa', '2023-06-01', '2023-06-30', '08:00:00', '10:30:00', 1, 7, 1),
+(10, 'JFE', 'FE', 'Senin dan Selasa', '2023-06-01', '2023-06-30', '08:00:00', '10:30:00', 1, 13, 1),
+(11, 'JBE', 'BE', 'Senin dan Kamis', '2023-06-01', '2023-07-15', '08:00:00', '11:00:00', 2, 14, 3),
+(12, 'JDMS', 'DMS', 'Kamis dan Jumat', '2023-06-01', '2023-07-30', '08:00:00', '11:00:00', 4, 10, 7),
+(13, 'JDMS', 'DMS', 'Kamis dan Jumat', '2023-06-01', '2023-07-30', '08:00:00', '11:00:00', 4, 16, 7),
+(14, 'JDPS', 'DPS', 'Rabu dan Kamis', '2023-06-01', '2023-07-30', '13:00:00', '16:00:00', 5, 11, 9),
+(15, 'JDPS', 'DPS', 'Rabu dan Kamis', '2023-06-01', '2023-07-30', '13:00:00', '16:00:00', 5, 17, 9),
+(16, 'JDMA', 'DMA', 'Selasa dan Jumat', '2023-06-01', '2023-07-30', '08:00:00', '11:00:00', 6, 12, 11),
+(17, 'JDMA', 'DMA', 'Selasa dan Jumat', '2023-06-01', '2023-07-30', '08:00:00', '11:00:00', 6, 18, 11),
+(18, 'JBE', 'BE', 'Senin dan Kamis', '2023-06-01', '2023-07-15', '08:00:00', '11:00:00', 2, 2, 3);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `penjadwalan_kelas1`
+--
+
+CREATE TABLE `penjadwalan_kelas1` (
+  `pengajar_id` int(11) NOT NULL,
+  `materi_id` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
+  `peserta_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `peserta`
+--
+
+CREATE TABLE `peserta` (
+  `id` int(11) NOT NULL,
+  `nama` varchar(45) NOT NULL,
+  `gender` enum('L','P') NOT NULL,
+  `hp` int(20) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `alamat` text NOT NULL,
+  `foto` varchar(45) NOT NULL,
+  `materi_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data untuk tabel `peserta`
+--
+
+INSERT INTO `peserta` (`id`, `nama`, `gender`, `hp`, `email`, `alamat`, `foto`, `materi_id`) VALUES
+(1, 'Danar', 'L', 891145235, 'anar@gmail.com', 'Jakarta', '', 1),
+(2, 'Ehren', 'L', 821843829, 'eren@gmail.com', 'Bogor', '', 2),
+(3, 'Fussena', 'L', 812781812, 'usen@gmail.com', 'Depok', '', 3),
+(4, 'Finno', 'L', 817237818, 'ino@gmail.com', 'Bogor', '', 4),
+(5, 'Ahar', 'L', 892498489, 'ahar@gmail.com', 'Depok', '', 5),
+(6, 'Azwan', 'L', 812763482, 'zwan@gmail.com', 'Bekasi', '', 6),
+(7, 'Gamya', 'L', 839488190, 'gamya@gmail.com', 'Jakarta', '', 1),
+(8, 'Chilo', 'L', 847562772, 'hilo@gmail.com', 'Bogor', '', 2),
+(9, 'Fandi', 'L', 893742656, 'andis@gmail.com', 'Jakarta', '', 3),
+(10, 'Hare', 'L', 863546177, 'harew@gmail.com', 'Depok', '', 4),
+(11, 'Hira', 'P', 893467671, 'hiral@gmail.com', 'Depok', '', 5),
+(12, 'Vander', 'L', 863456121, 'ander@gmail.com', 'Bogor', '', 6),
+(13, 'Arjun', 'L', 895452123, 'jun@gmail.com', 'Jakarta', '', 1),
+(14, 'Ishara', 'P', 875424143, 'shara@gmail.com', 'Bogor', '', 2),
+(15, 'Ciao', 'L', 893562313, 'cia@gmail.com', 'Jakarta', '', 3),
+(16, 'Fatir', 'L', 824343543, 'atir@gmail.com', 'Depok', '', 4),
+(17, 'Vanka', 'P', 891145235, 'vanka@gmail.com', 'Jakarta', '', 5),
+(18, 'Ratama', 'L', 824546545, 'tama@gmail.com', 'Depok', '', 6);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indeks untuk tabel `kategori`
+--
+ALTER TABLE `kategori`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `materi`
+--
+ALTER TABLE `materi`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `kode_UNIQUE` (`kode`),
+  ADD KEY `fk_materi_kategori_idx` (`kategori_id`);
+
+--
+-- Indeks untuk tabel `pengajar`
+--
+ALTER TABLE `pengajar`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_pengajar_materi1_idx` (`materi_id`);
+
+--
+-- Indeks untuk tabel `penjadwalan_kelas`
+--
+ALTER TABLE `penjadwalan_kelas`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_peserta_has_materi_materi1_idx` (`materi_id`),
+  ADD KEY `fk_peserta_has_materi_peserta1_idx` (`peserta_id`),
+  ADD KEY `fk_penjadwalan_kelas_pengajar1_idx` (`pengajar_id`),
+  ADD KEY `kode_kelas_UNIQUE` (`kode_kelas`) USING BTREE;
+
+--
+-- Indeks untuk tabel `penjadwalan_kelas1`
+--
+ALTER TABLE `penjadwalan_kelas1`
+  ADD PRIMARY KEY (`id`,`peserta_id`),
+  ADD KEY `fk_pengajar_has_materi_materi1_idx` (`materi_id`),
+  ADD KEY `fk_pengajar_has_materi_pengajar1_idx` (`pengajar_id`),
+  ADD KEY `fk_penjadwalan_kelas1_peserta1_idx` (`peserta_id`);
+
+--
+-- Indeks untuk tabel `peserta`
+--
+ALTER TABLE `peserta`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_peserta_materi1_idx` (`materi_id`);
+
+--
+-- AUTO_INCREMENT untuk tabel yang dibuang
+--
+
+--
+-- AUTO_INCREMENT untuk tabel `kategori`
+--
+ALTER TABLE `kategori`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT untuk tabel `materi`
+--
+ALTER TABLE `materi`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+
+--
+-- AUTO_INCREMENT untuk tabel `pengajar`
+--
+ALTER TABLE `pengajar`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT untuk tabel `penjadwalan_kelas`
+--
+ALTER TABLE `penjadwalan_kelas`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+
+--
+-- AUTO_INCREMENT untuk tabel `penjadwalan_kelas1`
+--
+ALTER TABLE `penjadwalan_kelas1`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT untuk tabel `peserta`
+--
+ALTER TABLE `peserta`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+--
+
+--
+-- Ketidakleluasaan untuk tabel `materi`
+--
+ALTER TABLE `materi`
+  ADD CONSTRAINT `fk_materi_kategori` FOREIGN KEY (`kategori_id`) REFERENCES `kategori` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Ketidakleluasaan untuk tabel `pengajar`
+--
+ALTER TABLE `pengajar`
+  ADD CONSTRAINT `fk_pengajar_materi1` FOREIGN KEY (`materi_id`) REFERENCES `materi` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Ketidakleluasaan untuk tabel `penjadwalan_kelas`
+--
+ALTER TABLE `penjadwalan_kelas`
+  ADD CONSTRAINT `fk_penjadwalan_kelas_pengajar1` FOREIGN KEY (`pengajar_id`) REFERENCES `pengajar` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_peserta_has_materi_materi1` FOREIGN KEY (`materi_id`) REFERENCES `materi` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_peserta_has_materi_peserta1` FOREIGN KEY (`peserta_id`) REFERENCES `peserta` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Ketidakleluasaan untuk tabel `penjadwalan_kelas1`
+--
+ALTER TABLE `penjadwalan_kelas1`
+  ADD CONSTRAINT `fk_pengajar_has_materi_materi1` FOREIGN KEY (`materi_id`) REFERENCES `materi` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_pengajar_has_materi_pengajar1` FOREIGN KEY (`pengajar_id`) REFERENCES `pengajar` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_penjadwalan_kelas1_peserta1` FOREIGN KEY (`peserta_id`) REFERENCES `peserta` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+--
+-- Ketidakleluasaan untuk tabel `peserta`
+--
+ALTER TABLE `peserta`
+  ADD CONSTRAINT `fk_peserta_materi1` FOREIGN KEY (`materi_id`) REFERENCES `materi` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+
+-- INNER JOIN (kategori + materi)
+SELECT materi.id, materi.kode, materi.nama, materi.deskripsi, materi.durasi, materi.biaya,
+kategori.nama AS kat_materi
+FROM materi
+INNER JOIN kategori ON materi.kategori_id = kategori.id;
+
+-- INNER JOIN (kategori + materi + pengajar + peserta + penjadwalan_kelas)
+SELECT penjadwalan_kelas.id, penjadwalan_kelas.kelas, 
+       materi.nama AS nama_materi,
+       pengajar.nama AS nama_pengajar,
+       peserta.nama AS nama_peserta
+FROM penjadwalan_kelas
+     INNER JOIN materi ON materi.id = penjadwalan_kelas.materi_id
+     INNER JOIN pengajar ON pengajar.id = penjadwalan_kelas.pengajar_id
+     INNER JOIN peserta ON peserta.id = penjadwalan_kelas.peserta_id
+
+-- INNER JOIN (kategori + materi + pengajar + peserta + penjadwalan_kelas)
+SELECT pk.id, pk.kelas, 
+       mtr.nama AS nm_mtr,
+       pgj.nama AS nama_pgj,
+       psrt.nama AS nama_psrt
+FROM penjadwalan_kelas AS pk
+    INNER JOIN materi AS mtr ON mtr.id = pk.materi_id
+    INNER JOIN pengajar AS pgj ON pgj.id = pk.pengajar_id
+    INNER JOIN peserta AS psrt ON psrt.id = pk.peserta_id
+
+
+
+

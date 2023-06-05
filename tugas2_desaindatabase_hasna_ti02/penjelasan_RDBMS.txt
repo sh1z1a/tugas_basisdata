@@ -1,0 +1,21 @@
+1. Penjelasan relasi one to many table kategori (master/one) ke table materi(relasi/many) (OTM)
+
+- Di kedua table tersebut saya masukan relasi berupa one to many, untuk mem-"foreign key" atau untuk menambahkan attribut kategori_id di tabel materi yang merujuk ke kunci utama/id dari tabel "kategori". 
+- Jadi setelah ada field kategori_id sebagai foreign key dari tabel kategori sebagai tabel master nya menandakan bahwa satu kategori(kursus) memiliki banyak materi(kursus) begitupun sebaliknya apabila di lihat dari tabel materi. Sebuah materi hanya menginduk ke sebuah kategori.
+
+2. Penjelasan relasi one to many table materi (master/one) ke table pengajar(relasi/many) (OTM)
+
+- Di kedua table tersebut saya masukan relasi berupa one to many, untuk mem-"foreign key" atau untuk menambahkan attribut materi_id di tabel pengajar yang merujuk ke kunci utama/id dari tabel "materi". 
+- Jadi setelah ada field materi_id sebagai foreign key dari tabel materi sebagai tabel master nya menandakan bahwa satu materi(kursus) memiliki banyak pengajar(kursus) begitupun sebaliknya apabila di lihat dari tabel pengajar. Sebuah pengajar hanya menginduk ke sebuah materi.
+
+3. Penjelasan relasi one to many table materi (master/one) ke table peserta(relasi/many) (OTM)
+
+- Di kedua table tersebut saya masukan relasi berupa one to many, untuk mem-"foreign key" atau untuk menambahkan attribut materi_id di tabel pengajar yang merujuk ke kunci utama/id dari tabel "materi". 
+- Jadi setelah ada field materi_id sebagai foreign key dari tabel materi sebagai tabel master nya menandakan bahwa satu materi(kursus) diikuti oleh banyak peserta(kursus) begitupun sebaliknya apabila di lihat dari tabel pengajar. Sebuah peserta hanya menginduk ke sebuah materi.
+
+4. Penjelasan relasi many to many table materi ke table peserta dan terbuatlah tabel penjadwalan kelas(MTM)
+
+- kelas a dengan Banyak nya peserta mengikuti banyak materi di tabel penjadwalan_kelas dan diajarkan oleh pengajar a merupakan contoh dari praktik mtm di tabel penjadwalan_kelas. Jadi ada tabel materi direlasikan many to many ke tabel peserta terbentuklah tabel penjadwalan kelas, yang mana akan muncul dua id primary key yaitu id pk tabel master dan peserta. Tetapi setelah itu dirubah id pk tabel materi dan peserta menjadi fk untuk dapat melakukan foreign key dengan tabel pengajar. Kemudian ditabel pengajar direlasikan secara one to many ke tabel penjadwalan_kelas. Jadilah model tabel dari konsep relasi many to many.
+
+
+
