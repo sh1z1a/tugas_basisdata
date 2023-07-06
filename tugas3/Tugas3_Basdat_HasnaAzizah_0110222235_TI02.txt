@@ -1,0 +1,383 @@
+-- use db toko_online
+USE toko_online;
+
+-- Soal 1.a Membuat trigger tambahStok dengan kondisi setelah penginputan di table suplai_produk otomatis bertambah ke trigger attribute stok di table produk 
+
+DELIMITER $$
+CREATE TRIGGER tambahStok
+AFTER INSERT ON suplai_produk
+FOR EACH ROW
+BEGIN
+	UPDATE produk SET stok = stok + NEW.jumlah WHERE id = NEW.produk_id;
+END$$
+DELIMITER ;
+SELECT * FROM produk;
+
+-- Soal 1.b Membuat trigger normalisasiStok dgn kondisi transaksi penginputan suplai_produk dibatalkan (delete), maka akan mentrigger stok kembali normal di tabel produk
+
+DELIMITER $$
+CREATE TRIGGER normalisasiStok
+AFTER DELETE ON suplai_produk
+FOR EACH ROW
+BEGIN
+	UPDATE produk SET stok = stok - old.jumlah WHERE id = old.produk_id;
+END$$
+DELIMITER ;
+SELECT * FROM produk;
+
+-- Soal 2 query inner join ( produk + jenis + suplai_produk + suplier) Tampilkan data tgl_suplai, nama produk, nama jenis, jumlah barang yang disuplai, nama supplier (relasi 4 buah tabel)
+
+-- use db toko_online
+USE toko_online;    
+
+SELECT suplai_produk.tgl as tgl_suplai,
+    produk.nama as nama_produk,
+    jenis.nama as nama_jenis,
+    suplai_produk.jumlah as jml_suplai,
+    suplier.nama as nama_suplier
+FROM suplai_produk
+	INNER JOIN produk on suplai_produk.produk_id = produk.id
+    INNER JOIN jenis on produk.jenis_id = jenis.id
+    INNER JOIN suplier on suplai_produk.suplier_id = suplier.id; 
+
+-- Soal 3 
+Microsoft Windows [Version 10.0.19044.3086]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Alfikri>cd C:\
+
+C:\>cd xampp\mysql\bin
+
+C:\xampp\mysql\bin>mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 16
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' IDENTIFIED BY '' WITH GRANT OPTION;
+Query OK, 0 rows affected (0.001 sec)
+
+MariaDB [(none)]> CREATE USER 'roni'@'localhost' IDENTIFIED BY '';
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [(none)]> DROP USER 'roni'@'localhost';
+Query OK, 0 rows affected (0.006 sec)
+
+-- Soal 3 A Roni akses penuh
+
+-- Masuk ke database dengan username Roni
+C:\Users\Alfikri>cd C:\
+
+C:\>cd xampp\mysql\bin
+C:\xampp\mysql\bin>mysql -u root -p
+Enter password:
+ERROR 1130 (HY000): Host 'localhost' is not allowed to connect to this MariaDB server
+
+C:\xampp\mysql\bin>mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 16
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+MariaDB [(none)]> SHOW DATABASES;
++------------------------------+
+| Database                     |
++------------------------------+
+| #mysql50#latihan inner join  |
+| #mysql50#tugas 3 toko online |
+| #mysql50#tugas inner join    |
+| db_koperasi                  |
+| db_mahasiswa                 |
+| db_pegawai                   |
+| dbecommerce                  |
+| dbkoperasi                   |
+| dbkoperasi1                  |
+| dbkursus                     |
+| dbpegawai                    |
+| dbpegawai_1                  |
+| dbpembelian                  |
+| dbpengajuanpegawai           |
+| dbperpus                     |
+| dbpos                        |
+| dbprojek                     |
+| dbtoko                       |
+| information_schema           |
+| mydb                         |
+| mysql                        |
+| performance_schema           |
+| phpmyadmin                   |
+| test                         |
+| toko_online                  |
++------------------------------+
+25 rows in set (0.004 sec)
+
+MariaDB [(none)]> SHOW TABLES FROM toko_online;
++-----------------------+
+| Tables_in_toko_online |
++-----------------------+
+| jenis                 |
+| pelanggan             |
+| pesanan               |
+| produk                |
+| retur                 |
+| suplai_produk         |
+| suplier               |
++-----------------------+
+7 rows in set (0.002 sec)
+MariaDB [toko_online]> \q
+Bye
+
+-- Soal 3 B Desi izin akses ke database toko_online dan seluruh tabel di dalamnya
+C:\Users\Alfikri>cd C:\
+
+C:\xampp\mysql\bin>mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 16
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> GRANT ALL PRIVILEGES ON toko_online.* TO 'Desi'@'localhost' IDENTIFIED BY 'Desi';
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [(none)]> FLUSH PRIVILEGES;
+Query OK, 0 rows affected (0.001 sec)
+
+MariaDB [(none)]> \q
+Bye
+
+-- Masuk ke database dengan username Desi
+C:\Users\Alfikri>cd C:\
+
+C:\xampp\mysql\bin>mysql -u root -p
+Enter password:
+ERROR 1130 (HY000): Host 'localhost' is not allowed to connect to this MariaDB server
+
+C:\xampp\mysql\bin>mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 16
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> SHOW DATABASES;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| test               |
+| toko_online        |
++--------------------+
+3 rows in set (0.003 sec)
+
+MariaDB [(none)]> use toko_online;
+Database changed
+MariaDB [toko_online]> show tables;
++-----------------------+
+| Tables_in_toko_online |
++-----------------------+
+| jenis                 |
+| pelanggan             |
+| pesanan               |
+| produk                |
+| retur                 |
+| suplai_produk         |
+| suplier               |
++-----------------------+
+7 rows in set (0.001 sec)
+
+MariaDB [toko_online]> \q
+Bye
+
+
+--Soal 3 C (Zaki izin akses hanya menginput dan select)
+C:\Users\Alfikri>cd C:\
+C:\xampp\mysql\bin>mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 493
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> GRANT SELECT, INSERT ON toko_online.produk TO Zaki@localhost IDENTIFIED BY 'Zaki';
+Query OK, 0 rows affected (0.002 sec)
+
+MariaDB [(none)]> GRANT SELECT, INSERT ON toko_online.jenis TO Zaki@localhost IDENTIFIED BY 'Zaki';
+Query OK, 0 rows affected (0.002 sec)
+
+MariaDB [(none)]> FLUSH PRIVILEGES;
+Query OK, 0 rows affected (0.008 sec)
+
+-- Masuk ke database username Zaki
+C:\Users\Alfikri>cd C:\
+C:\>cd xampp\mysql\backup_database
+C:\xampp\mysql\backup_database>mysql -u zaki -p
+Enter password: ****
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 494
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| test               |
+| toko_online        |
++--------------------+
+3 rows in set (0.004 sec)
+
+MariaDB [(none)]> use toko_online;
+Database changed
+MariaDB [toko_online]> show tables
+    -> ;
++-----------------------+
+| Tables_in_toko_online |
++-----------------------+
+| jenis                 |
+| produk                |
++-----------------------+
+2 rows in set (0.001 sec)
+
+MariaDB [toko_online]> select * from produk;
++----+-------+--------------+---------+------+------------------+----------+
+| id | kode  | nama         | harga   | stok | foto             | jenis_id |
++----+-------+--------------+---------+------+------------------+----------+
+|  1 | tv001 | TV 32 inchi  | 5000000 |    4 | produk_tv001.jpg |        1 |
+|  3 | mj001 | Meja Belajar | 2000000 |    6 | produk_mj001.jpg |        2 |
+|  4 | mj002 | Meja Makan   | 4000000 |    3 | produk_mj002.jpg |        2 |
+|  5 | SF111 | Sofa         | 7000000 |    2 | produk_SF111.jpg |        2 |
+|  9 | KP111 | Kipas Angin  |  500000 |   15 | produk_KP111.jpg |        1 |
+| 11 | MX111 | Mixer        | 5000000 |    5 | produk_MX111.jpg |        1 |
++----+-------+--------------+---------+------+------------------+----------+
+6 rows in set (0.001 sec)
+
+MariaDB [toko_online]> select * from jenis;
++----+------------+
+| id | nama       |
++----+------------+
+|  1 | Elektronik |
+|  2 | Furniture  |
+|  3 | Souvenir   |
++----+------------+
+3 rows in set (0.001 sec)
+
+MariaDB [toko_online]> SHOW GRANTS FOR 'Zaki'@'localhost';
++-------------------------------------------------------------------------------------------------------------+
+| Grants for Zaki@localhost                                                                                   |
++-------------------------------------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `Zaki`@`localhost` IDENTIFIED BY PASSWORD '*FDC65B3D8D3FD0A1B86173D96CDFDB976442E465' |
+| GRANT SELECT, INSERT ON `toko_online`.`produk` TO `Zaki`@`localhost`                                        |
+| GRANT SELECT, INSERT ON `toko_online`.`jenis` TO `Zaki`@`localhost`                                         |
++-------------------------------------------------------------------------------------------------------------+
+3 rows in set (0.000 sec)
+
+MariaDB [toko_online]> \q
+Bye
+
+-- Soal 4 A (Mencabut hak akses Zaki)
+C:\Users\Alfikri>cd C:\
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 497
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> REVOKE INSERT ON toko_online.produk from 'Zaki'@'localhost';
+Query OK, 0 rows affected (0.001 sec)
+
+MariaDB [(none)]> REVOKE INSERT ON toko_online.jenis from 'Zaki'@'localhost';
+Query OK, 0 rows affected (0.001 sec)
+
+MariaDB [(none)]> \q
+Bye
+
+-- Masuk ke database username Zaki
+C:\Users\Alfikri>cd C:\
+C:\>cd xampp\mysql\backup_database
+C:\xampp\mysql\backup_database>mysql -u Zaki -p
+Enter password: ****
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 498
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]>  use toko_online;
+Database changed
+MariaDB [toko_online]> SHOW GRANTS FOR 'Zaki'@'localhost';
++-------------------------------------------------------------------------------------------------------------+
+| Grants for Zaki@localhost                                                                                   |
++-------------------------------------------------------------------------------------------------------------+
+| GRANT USAGE ON *.* TO `Zaki`@`localhost` IDENTIFIED BY PASSWORD '*FDC65B3D8D3FD0A1B86173D96CDFDB976442E465' |
+| GRANT SELECT ON `toko_online`.`produk` TO `Zaki`@`localhost`                                                |
+| GRANT SELECT ON `toko_online`.`jenis` TO `Zaki`@`localhost`                                                 |
++-------------------------------------------------------------------------------------------------------------+
+3 rows in set (0.000 sec)
+
+MariaDB [toko_online]> \q
+Bye
+
+-- Soal 4 B (Mencabut hak akses Desi)
+C:\Users\Alfikri>cd C:\
+C:\>cd xampp\mysql\backup_database
+C:\xampp\mysql\backup_database>mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 499
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> REVOKE ALL ON toko_online.* from 'Desi'@'localhost';
+Query OK, 0 rows affected (0.002 sec)
+
+MariaDB [(none)]> FLUSH PRIVILEGES;
+Query OK, 0 rows affected (0.001 sec)
+
+MariaDB [(none)]> \q
+Bye
+
+-- Masuk ke databases User Desi
+C:\Users\Alfikri>cd C:\
+C:\>cd xampp\mysql\backup_database
+C:\xampp\mysql\backup_database>mysql -u Desi -p
+Enter password: ****
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 500
+Server version: 10.4.28-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> use toko_online;
+ERROR 1044 (42000): Access denied for user 'Desi'@'localhost' to database 'toko_online'
+MariaDB [(none)]>
